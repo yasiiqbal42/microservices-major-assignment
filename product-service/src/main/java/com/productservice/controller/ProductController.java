@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -30,26 +31,6 @@ public class ProductController {
     public void createProduct(@RequestBody ProductRequest productRequest) {
         productService.createProduct(productRequest);
     }
-//    public ResponseEntity<ProductRequest> createProduct(@RequestBody ProductRequest productRequest, HttpServletRequest request) {
-//        productService.createProduct(productRequest);
-//        if (productRequest != null) {
-//            try {
-//                productService.createProduct(productRequest);
-//                return new ResponseEntity<ProductRequest>(
-//                        productRequest,
-//                        headerGenerator.getHeadersForSuccessPostMethod(request),
-//                        HttpStatus.CREATED);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return new ResponseEntity<ProductRequest>(
-//                        headerGenerator.getHeadersForError(),
-//                        HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
-//        return new ResponseEntity<ProductRequest>(
-//                headerGenerator.getHeadersForError(),
-//                HttpStatus.BAD_REQUEST);
-//    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -64,6 +45,7 @@ public class ProductController {
 
     }
 
+
     @PutMapping("/{productId}")
     @ResponseStatus(HttpStatus.OK)
     public Product updateProduct(@PathVariable(value = "productId") String productId, @RequestBody Product product) {
@@ -74,5 +56,27 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable(value = "productId") String productId){
         productService.deleteProduct(productId);
+    }
+
+    @GetMapping("/sortBy")
+    public List<Product> sortProduct(@RequestParam String sort){
+        List<String> sortParams= Arrays.stream(sort.split("_")).toList();
+        return productService.sortProduct(sortParams);
+
+    }
+
+
+    @GetMapping("/filter/price")
+    public List<Product> filterByPrice(@RequestParam String startPrice, @RequestParam String endPrice){
+        float priceStart= Float.parseFloat(startPrice);
+        float priceEnd=Float.parseFloat(endPrice);
+        return productService.filterByPrice(priceStart,priceEnd);
+
+    }
+    @GetMapping("/filter/rating")
+    public List<Product> filterByRating(@RequestParam String minRating, @RequestParam String maxRating) {
+        float _minRating = Float.parseFloat(minRating);
+        float _maxRating = Float.parseFloat(maxRating);
+        return productService.filterByRating(_minRating, _maxRating);
     }
 }

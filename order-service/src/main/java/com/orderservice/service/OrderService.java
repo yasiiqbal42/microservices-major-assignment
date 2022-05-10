@@ -41,8 +41,10 @@ public class OrderService {
 
         // Call Inventory Service, and place order if product is in
         // stock
+        //Changed the url of with service name that is runing on eureka client
+        //.uri("http://localhost:8082/api/inventory",
         InventoryResponse[] inventoryResponsArray = webClient.get()
-                .uri("http://localhost:8082/api/inventory",
+                .uri("http://inventory-service/api/inventory",
                         uriBuilder -> uriBuilder.queryParam("skuCode", skuCodes).build())
                 .retrieve()
                 .bodyToMono(InventoryResponse[].class)

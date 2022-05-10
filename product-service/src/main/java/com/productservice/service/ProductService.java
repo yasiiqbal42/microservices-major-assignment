@@ -7,12 +7,13 @@ import com.productservice.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,8 @@ public class ProductService {
     public void createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .name(productRequest.getName())
+                .rating(productRequest.getRating())
+                .category(productRequest.getCategory())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
                 .build();
@@ -44,6 +47,8 @@ public class ProductService {
         return ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
+                .rating(product.getRating())
+                .category(product.getCategory())
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .build();
@@ -66,5 +71,50 @@ public class ProductService {
     public void deleteProduct(String productId) {
         Product product = productRepository.findById(productId).orElseThrow();
         productRepository.delete(product);
+    }
+
+    public List<Product> sortProduct(List<String> sortParams) {
+
+        String sortColumn= sortParams.get(0);
+        String direction = sortParams.get(1);
+
+        if(direction.equals("desc")){
+            return productRepository.findAll(Sort.by(Sort.Direction.DESC, sortColumn));
+        }
+        else{
+            return productRepository.findAll(Sort.by(Sort.Direction.ASC, sortColumn));
+        }
+
+//        if(sortParams.get(0).equals("price")){
+//            if (sortParams.get(1).equals("asc")) {
+//                return productRepository.findAllByOrderByPriceAsc();
+//            }
+//            else{
+//                return productRepository.findAllByOrderByPriceDesc();
+//            }
+//        }
+//        if(sortParams.get(0).equals("rating")){
+//            if (sortParams.get(1).equals("asc")) {
+//                return productRepository.findAllByOrderByRatingAsc();
+//            }
+//            else{
+//                return productRepository.findAllByOrderByRatingDesc();
+//            }
+//        }
+//
+//
+
+    }
+
+    public List<Product> filterByPrice(float startPrice, float endPrice) {
+        List<Product>  product= productRepository.findAll();
+        return product.stream().filter(p->p.getPrice()>startPrice)
+                .filter(p->p.getPrice()<endPrice).collect(Collectors.toList());
+    }
+
+    public List<Product> filterByRating(float _minRating, float _maxRating) {
+        List<Product>  product= productRepository.findAll();
+        return product.stream().filter(p->p.getRating()>_minRating)
+                .filter(p->p.getRating()<_maxRating).collect(Collectors.toList());
     }
 }

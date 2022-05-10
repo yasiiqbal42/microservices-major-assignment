@@ -13,8 +13,16 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 
 public class ProductRequest {
+//    private String name;
+//    private String description;
+//    private BigDecimal price;
+//
+//    private String id;
+//    //NEED TO IMPLEMENT THE RATINGS
     private String name;
+    private String category;
     private String description;
-    private BigDecimal price;
+    private float price;
+    private float rating;
 
 }

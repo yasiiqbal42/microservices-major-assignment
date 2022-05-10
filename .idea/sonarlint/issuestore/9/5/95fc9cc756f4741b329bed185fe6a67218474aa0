@@ -1,0 +1,16 @@
+
+o
+java:S2293O"YReplace the type specification in this constructor call with the diamond operator ("<>").(×éÝ¹
+f	java:S117>"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ªÜÞˆ
+W
+java:S4973Q"<Strings and Boxed types should be compared using "equals()".(²ßªøøÿÿÿÿ
+W
+java:S4973R"<Strings and Boxed types should be compared using "equals()".(ôêÈ¬øÿÿÿÿ
+R
+java:S4973\"<Strings and Boxed types should be compared using "equals()".(œýÙ
+W
+java:S4973]"<Strings and Boxed types should be compared using "equals()".(ôêÈ¬øÿÿÿÿ
+^
+java:S1854O"ARemove this useless assignment to local variable "sortedProduct".(×éÝ¹8Î»³ðŠ0
+O
+java:S1481O"2Remove this unused "sortedProduct" local variable.(×éÝ¹8´¬·ðŠ0
